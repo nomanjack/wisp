@@ -26,3 +26,4 @@ assets/*
 # development log and obsolete test pages
 NOTES.md
 tools/masktest.html
+launch/

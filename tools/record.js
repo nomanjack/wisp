@@ -6,7 +6,7 @@
 // Usage (in the page): const {record} = await import('/tools/record.js'); await record({name:'chase-1x'})
 import {Muxer, ArrayBufferTarget} from '/node_modules/mp4-muxer/build/mp4-muxer.mjs';
 
-export async function record({name = 'recording', from = 0, to, rate = 1, fps = 30, encode = true, capture = 0} = {}) {
+export async function record({name = 'recording', from = 0, to, rate = 1, fps = 30, encode = true, capture = 0, bitrate = 10e6} = {}) {
   // capture: every this many seconds of video, keep the original frame and the composited player frame as JPEG
   // (base64, 768 px wide) for the QA judge (tools/qa.js). 0 = off.
   const captures = []; let nextCapture = from;
@@ -60,7 +60,7 @@ export async function record({name = 'recording', from = 0, to, rate = 1, fps = 
 
   const muxer = new Muxer({target: new ArrayBufferTarget(), video: {codec: 'avc', width: W, height: H}, fastStart: 'in-memory'});
   const enc = new VideoEncoder({output: (c, m) => muxer.addVideoChunk(c, m), error: e => { throw e; }});
-  enc.configure({codec: 'avc1.640033', width: W, height: H, bitrate: 10e6, framerate: fps});
+  enc.configure({codec: 'avc1.640033', width: W, height: H, bitrate, framerate: fps});
 
   const frames = Math.floor((to - from) / rate * fps);
   let lastPaint = -1e9;
@@ -80,6 +80,9 @@ export async function record({name = 'recording', from = 0, to, rate = 1, fps = 
     layer(amb, rel(amb), `blur(${num(css.getPropertyValue('--ambient-blur'), 34) * S}px) saturate(.95)`, ambOp, ambMask);
     if (glow && getComputedStyle(glow).display !== 'none') layer(glow, rel(glow), `blur(${num(css.getPropertyValue('--edge-glow-blur'), 30) * S}px) saturate(.6)`, Math.min(1, ambOp * 1.25), glowMask);
     const fr = rel(film); o.drawImage(film, fr.x * S, fr.y * S, fr.w * S, fr.h * S);
+    // the page clips everything to the player (overflow: clip); a blurred layer otherwise leaks a faint grey line
+    // past its bottom edge when the player's height isn't a whole number of output pixels
+    o.fillStyle = bg; o.fillRect(0, Math.floor(pr.height * S), W, H); o.fillRect(Math.floor(pr.width * S), 0, W, H);
     if (shadeOn) { const sg = o.createLinearGradient(0, 0, 0, H); sg.addColorStop(.55, '#080d1600'); sg.addColorStop(1, '#080d1644'); o.fillStyle = sg; o.fillRect(0, 0, W, H); }
 
     if (grab) {
