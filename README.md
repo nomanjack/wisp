@@ -1,14 +1,19 @@
 # Wisp
 
-A web video player whose edges dissolve softly into the page, lit by the video's own colours, without ever fading over the people in the shot.
+A video player with no hard edges. The picture dissolves into the page, lit by its own colours, like a memory.
+
+Soft edges have a catch: whatever sits at the edge gets softened too. A child running into frame, a face near the top, a dog walking out on the right all vanish into the haze. Wisp knows where the people, animals and faces are, sees them coming before they reach an edge, and opens the fade around them. They stay sharp while everything else drifts away.
 
 ![Wisp](docs/preview.jpg)
 
 ## How it works
 
-- **Soft edges.** A WebGL renderer feathers the picture into the page, with a blurred halo taken from the same frame.
-- **Subjects stay clear.** Where a person, animal or face reaches an edge, the fade pulls back and opens a soft gap around them.
-- **Smooth motion.** Fades move on springs and snap cleanly on scene cuts.
+1. **It knows who's in the shot.** Each clip comes with a focus track: TypeSafe's Jev image model marks every person, animal and face through the clip, ahead of time. A clip without a track falls back to on-device face detection (MediaPipe) and a live map of where the detail is.
+2. **It plans ahead.** The player reads the track up to two seconds ahead. An edge starts opening before someone walks in, and it doesn't close while they're about to come back.
+3. **It shapes the fade around them.** A WebGL shader draws every frame with four soft edges, plus soft oval openings around anyone at an edge. Even an opening fades out before the frame's border, so there's never a hard line.
+4. **It moves gently.** Every edge and opening eases on a spring, so changes start and stop smoothly instead of jumping. Scene cuts are detected, and the fade resets instantly instead of sliding across.
+5. **It lights the page.** A blurred halo and an edge glow, both taken from the same frame, carry the picture's colours out into the page.
+6. **It checks its own work.** `tools/qa.js` plays every clip through the real player. It shows Jev the original frame and what Wisp drew, measures whether each person and face stayed visible, and flags sudden moves and hard edges.
 
 ## Run it
 
