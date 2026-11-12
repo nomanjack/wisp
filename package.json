@@ -1,0 +1,29 @@
+{
+  "name": "wisp",
+  "version": "1.0.0",
+  "description": "A web video player whose edges dissolve into ambient light without ever fading over the people in the shot.",
+  "main": "app.js",
+  "scripts": {
+    "start": "npm run build && node server.mjs",
+    "build": "esbuild app.js --bundle --format=esm --outfile=bundle.js --minify --external:/vendor/*",
+    "serve": "node server.mjs"
+  },
+  "keywords": [
+    "video",
+    "player",
+    "ambient",
+    "webgl",
+    "video.js"
+  ],
+  "author": "Nomanjack",
+  "license": "MIT",
+  "dependencies": {
+    "@mediapipe/tasks-vision": "^1.2.2",
+    "@videojs/html": "^10.2.0",
+    "dialkit": "^2.2.0",
+    "esbuild": "^0.28.2",
+    "mp4-muxer": "^5.2.2",
+    "three": "^0.184.0"
+  },
+  "type": "module"
+}

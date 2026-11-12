@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wisp QA</title>
+<style>
+:root{color-scheme:dark;--bg:#0f1113;--card:#171a1d;--line:#ffffff12;--dim:#8a9096;--ok:#34c759;--bad:#ff5a4f;--info:#7fb3ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#e8eaec;font:13px/1.5 -apple-system,BlinkMacSystemFont,sans-serif}
+main{max-width:1280px;margin:auto;padding:28px 24px 60px}h1{font-size:20px;font-weight:500;margin:0 0 4px}.sub{color:var(--dim);margin:0 0 22px}
+.totals{display:flex;gap:10px;margin:0 0 22px;flex-wrap:wrap}.tot{background:var(--card);border-radius:10px;padding:10px 14px}.tot b{font-size:20px;font-weight:500;display:block}
+details.list{background:var(--card);border-radius:10px;padding:10px 14px;margin-bottom:18px}details.list summary{cursor:pointer;color:#cfd3d6}
+.check{display:grid;grid-template-columns:200px 1fr 260px;gap:12px;padding:6px 0;border-top:1px solid var(--line);color:#c3c7cb}.check b{font-weight:500;color:#e8eaec}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:10px;overflow:hidden}th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:500;color:var(--dim);font-size:11px;white-space:nowrap}td.name{font-weight:500;white-space:nowrap;cursor:pointer}td.name small{display:block;color:var(--dim);font-weight:400}
+.c{font-variant-numeric:tabular-nums;white-space:nowrap;font-size:12px}.c i{font-style:normal;margin-right:5px}.ok i{color:var(--ok)}.bad{color:#ffb4ad}.bad i{color:var(--bad)}.info i{color:var(--info)}
+tr.detail td{background:#121416;padding:14px}.frames{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}.frames figure{margin:0}.frames img{width:100%;border-radius:6px;display:block}
+.frames figcaption{color:var(--dim);font-size:11px;margin-top:4px}.moments{color:var(--dim);font-size:12px;margin:0 0 10px}.empty{color:var(--dim);padding:30px;text-align:center}
+@media(max-width:800px){.check{grid-template-columns:1fr}th:nth-child(n+5),td:nth-child(n+5){display:none}}
+</style></head>
+<body><main>
+<h1>Wisp QA</h1>
+<p class="sub" id="when">Run in the player (<code>/?debug</code>): <code>const {runQA} = await import('/tools/qa.js'); await runQA()</code></p>
+<div class="totals" id="totals"></div>
+<details class="list"><summary>The checklist</summary><div id="list"></div></details>
+<table><thead id="head"></thead><tbody id="rows"><tr><td class="empty">No report yet.</td></tr></tbody></table>
+</main>
+<script type="module">
+const r = await fetch('/tools/snaps/qa-report.json?' + Date.now()).then(x => x.ok ? x.json() : null).catch(() => null);
+if (r) {
+  const $ = id => document.getElementById(id), esc = s => String(s ?? '–').replace(/[&<>]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'})[c]);
+  $('when').textContent = `Run ${new Date(r.when).toLocaleString()} · Jev opinions calibrated on Chase (washed out ${r.calibration?.hazed ?? '–'}, seam ${r.calibration?.seam ?? '–'})`;
+  const sc = Object.entries(r.scenes), passN = sc.filter(([, v]) => v.pass).length;
+  const fails = {}; for (const [, v] of sc) for (const [k, c] of Object.entries(v.checks)) if (!c.pass) fails[k] = (fails[k] || 0) + 1;
+  $('totals').innerHTML = `<div class="tot"><b>${passN}/${sc.length}</b>videos pass everything</div>` +
+    r.checklist.filter(c => fails[c.id]).map(c => `<div class="tot"><b>${fails[c.id]}</b>${esc(c.name)}</div>`).join('');
+  $('list').innerHTML = r.checklist.map(c => `<div class="check"><b>${esc(c.name)}</b><span>${esc(c.how)}</span><span>Pass: ${esc(c.pass)}</span></div>`).join('');
+  $('head').innerHTML = `<tr><th>Video</th>${r.checklist.map(c => `<th title="${esc(c.how)}">${esc(c.name)}</th>`).join('')}</tr>`;
+  $('rows').innerHTML = sc.map(([name, v]) => {
+    const cells = r.checklist.map(c => { const x = v.checks[c.id]; const cls = x.info ? 'info' : x.pass ? 'ok' : 'bad'; return `<td class="c ${cls}"><i>${x.info ? 'ⓘ' : x.pass ? '✓' : '✗'}</i>${esc(x.value)}</td>`; }).join('');
+    const frames = v.frames.map(f => f.error ? `<figure><figcaption>${f.t}s · ${esc(f.error)}</figcaption></figure>` :
+      `<figure><img loading="lazy" src="/tools/snaps/${f.img}?${Date.now()}" alt="${name} at ${f.t}s"><figcaption>${f.t}s · subject ${pc(f.vis.subject)} · edge ${pc(f.vis.actor)} · face ${pc(f.vis.face)} · Jev: washed out ${f.p.hazed ?? '–'}, dreamy ${f.p.dreamy ?? '–'}${f.cached ? ' · cached' : ''}</figcaption></figure>`).join('');
+    const moments = v.checks.motion.moments?.length ? `<p class="moments">Motion flags: ${esc(v.checks.motion.moments.join(' · '))}</p>` : '';
+    return `<tr data-k="${name}"><td class="name">${v.pass ? '✓' : '✗'} ${esc(name)}<small>${v.duration}s</small></td>${cells}</tr>
+      <tr class="detail" data-d="${name}" hidden><td colspan="${r.checklist.length + 1}">${moments}<div class="frames">${frames}</div></td></tr>`;
+  }).join('');
+  function pc(v) { return v == null ? '–' : Math.round(v * 100) + '%'; }
+  $('rows').addEventListener('click', e => { const tr = e.target.closest('tr[data-k]'); if (tr) { const d = $('rows').querySelector(`[data-d="${tr.dataset.k}"]`); d.hidden = !d.hidden; } });
+}
+</script>
+</body></html>

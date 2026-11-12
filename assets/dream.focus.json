@@ -1,0 +1,40 @@
+{
+ "version": 2,
+ "scene": "dream",
+ "model": "jev-1.14.0",
+ "interval": null,
+ "sampling": "scene-change",
+ "generated": "2026-11-11T08:31:40.348Z",
+ "samples": [
+  {
+   "t": 0,
+   "box": {
+    "top": 0.37,
+    "bottom": 0.65,
+    "left": 0.42,
+    "right": 0.79
+   },
+   "confidence": 0.22
+  },
+  {
+   "t": 2,
+   "box": {
+    "top": 0.31,
+    "bottom": 0.65,
+    "left": 0.39,
+    "right": 0.58
+   },
+   "confidence": 0.62
+  },
+  {
+   "t": 4.5,
+   "box": {
+    "top": 0.17,
+    "bottom": 0.69,
+    "left": 0.32,
+    "right": 0.63
+   },
+   "confidence": 0.91
+  }
+ ]
+}

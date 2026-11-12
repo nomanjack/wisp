@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Focus Tracks</title>
+<style>
+:root{color-scheme:dark;font:13px/1.5 -apple-system,BlinkMacSystemFont,sans-serif;background:#101214;color:#e8ecf0}
+body{max-width:760px;margin:40px auto;padding:0 16px}h1{font-size:18px;font-weight:500;margin:0 0 4px}p{color:#9aa4ae;margin:0 0 20px}
+fieldset{border:0;padding:0;margin:0 0 16px;display:flex;flex-wrap:wrap;gap:8px 18px}label{display:flex;gap:6px;align-items:center}
+input[type=number]{width:60px;background:#1d242d;color:inherit;border:0;border-radius:6px;padding:6px}
+button{font:inherit;background:#e8ecf0;color:#101214;border:0;border-radius:8px;padding:9px 16px;cursor:pointer}button:disabled{opacity:.4;cursor:default}
+#status{margin:12px 0;color:#c6ced8}#log{white-space:pre-wrap;font:11px/1.6 ui-monospace,monospace;color:#9aa4ae;background:#171b20;border-radius:10px;padding:12px;max-height:340px;overflow:auto}
+#preview{position:relative;display:inline-block;margin:12px 0}#preview canvas{display:block;width:320px;border-radius:6px}#box{position:absolute;border:2px solid #ffd257;border-radius:3px;pointer-events:none}
+</style></head>
+<body>
+<h1>Focus tracks</h1>
+<p>Samples frames from each bundled video, asks Jev for a box around the main subject, and saves <code>assets/&lt;scene&gt;.focus.json</code>. The player picks these up automatically.</p>
+<fieldset id="scenes"></fieldset>
+<fieldset>
+ <label><input id="smart" type="checkbox" checked> Only at scene changes</label><label>else every <input id="interval" type="number" min="0.25" max="10" step="0.25" value="2"> s</label>
+ <label><input id="mock" type="checkbox"> Mock boxes (no API calls)</label>
+</fieldset>
+<button id="go">Generate</button> <span id="key"></span>
+<div id="status"></div>
+<div id="preview" hidden><canvas id="frame"></canvas><div id="box"></div><div id="box2" style="position:absolute;border:2px solid #57d2ff;border-radius:3px;display:none"></div></div>
+<div id="log"></div>
+<script type="module">
+const KNOWN=['marble','chase','beachgirl','balloons','rocket','studio','desert','dog','redtop','boat','beachwalk','haze','camels','balloon','sailboat','paraglider','paddler','dream','mountains','ocean','neon','clouds','sunset','forest'];
+const SCENES=await fetch('/api/scenes').then(r=>r.json()).catch(()=>KNOWN);   // every clip in assets/, including your own
+const $=id=>document.getElementById(id),log=m=>{$('log').textContent+=m+'\n';$('log').scrollTop=1e9};
+$('scenes').innerHTML=SCENES.map(s=>`<label><input type="checkbox" value="${s}" checked> ${s}</label>`).join('');
+const status=await fetch('/api/focus/status').then(r=>r.json()).catch(()=>({}));
+$('key').textContent=status.hasKey?`Key found · ${status.model}`:'No key found: add it to .env.local and restart, or use mock';
+if(!status.hasKey)$('mock').checked=true;
+
+// Jev accepts 280–1568 px per side; a long side of 1536 keeps small, distant subjects legible.
+function frameSize(w,h){let s=Math.min(1,1536/Math.max(w,h));if(Math.min(w,h)*s<320)s=320/Math.min(w,h);return[Math.round(w*s),Math.round(h*s)]}
+const seek=(v,t)=>new Promise(r=>{v.addEventListener('seeked',r,{once:true});v.currentTime=t});
+// 14 · Cost control: scan every 0.5 s with a tiny frame diff and only ask Jev at a cut, after enough
+// gradual drift since the last asked frame (≥1.5 s apart), or at least every 4 s.
+// Tuned on the 12 bundled clips: ~60 frames instead of 124 at a fixed 2 s.
+async function pickFrames(v){
+ const c=document.createElement('canvas');c.width=32;c.height=18;const x=c.getContext('2d',{willReadFrequently:true});
+ const lum=()=>{x.drawImage(v,0,0,32,18);const d=x.getImageData(0,0,32,18).data,o=new Float32Array(576);for(let i=0;i<576;i++)o[i]=(d[i*4]*.2126+d[i*4+1]*.7152+d[i*4+2]*.0722)/255;return o};
+ // Change = the largest change in any 8×6-cell region, not the frame average: a person entering one edge of a
+ // static shot changes only a corner of the frame, which a whole-frame mean barely notices.
+ const mean=(a,b)=>{let s=0;for(let i=0;i<a.length;i++)s+=Math.abs(a[i]-b[i]);return s/a.length};
+ const diff=(a,b)=>{let m=0;for(let by=0;by<18;by+=6)for(let bx=0;bx<32;bx+=8){let s=0;for(let y=by;y<by+6;y++)for(let x=bx;x<bx+8;x++)s+=Math.abs(a[y*32+x]-b[y*32+x]);m=Math.max(m,s/48)}return m};
+ const picked=[0];let prev=null,anchor=null,lastT=0;
+ for(let t=0;t<v.duration-.05;t+=.5){await seek(v,t);const l=lum();
+  if(prev&&anchor){const cut=mean(l,prev)>.12,   // a real cut changes the whole frame; a moving camera changes every region a little
+   drift=diff(l,anchor)>.14&&t-lastT>=1.5,stale=t-lastT>=4;
+   if(cut||drift||stale){picked.push(+t.toFixed(2));anchor=l;lastT=t}}
+  else anchor=l;prev=l}
+ const end=+Math.max(0,v.duration-.15).toFixed(2);if(end-picked[picked.length-1]>.75)picked.push(end);   // always include the final frame
+ return picked}
+const toBase64=c=>new Promise(r=>c.toBlob(b=>{const fr=new FileReader();fr.onload=()=>r(fr.result.split(',')[1]);fr.readAsDataURL(b)},'image/jpeg',.85));
+
+async function run(scene,interval,mock){
+ const v=document.createElement('video');v.muted=true;v.preload='auto';v.src=`/assets/${scene}.mp4`;
+ await new Promise((ok,fail)=>{v.onloadeddata=ok;v.onerror=()=>fail(new Error('video failed to load'))});
+ const [w,h]=frameSize(v.videoWidth,v.videoHeight),c=$('frame');c.width=w;c.height=h;const ctx=c.getContext('2d');
+ const times=$('smart').checked?await pickFrames(v):(()=>{const a=[];for(let t=0;t<v.duration-.05;t+=interval)a.push(+t.toFixed(3));return a})();
+ log(`${scene}: ${v.videoWidth}×${v.videoHeight}, ${v.duration.toFixed(1)} s → ${times.length} frames at ${w}×${h}`);
+ $('preview').hidden=false;const samples=[];let model='mock';
+ for(const [i,t] of times.entries()){
+  await seek(v,t);ctx.drawImage(v,0,0,w,h);
+  const body=mock?{mock:true,t}:{jpegBase64:await toBase64(c)};
+  let r;for(let attempt=0;attempt<3;attempt++){
+   r=await fetch('/api/focus/box',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(x=>x.json());
+   if(!r.error)break;log(`  t=${t}: ${r.error}`);if(/40[13]|No TYPESAFE/.test(r.error))throw new Error('Stopping: key problem');await new Promise(z=>setTimeout(z,1500*(attempt+1)));
+  }
+  if(r.error)continue;model=r.model||model;
+  const round=b=>({top:+b.top.toFixed(4),bottom:+b.bottom.toFixed(4),left:+b.left.toFixed(4),right:+b.right.toFixed(4)});const b=r.box;
+  const sample={t,box:round(b),confidence:r.confidence};if(r.actor)sample.actor={box:round(r.actor.box),confidence:r.actor.confidence};if(r.text)sample.text={box:round(r.text.box),confidence:r.text.confidence,p:r.text.p};samples.push(sample);
+  if(i===0)log(`  first answer: has_actor=${JSON.stringify(r.rawHasActor)} actor=${JSON.stringify(r.actor)}`);
+  if(r.actor){const a=r.actor.box;Object.assign($('box2').style,{display:'block',left:`${a.left*100}%`,top:`${a.top*100}%`,width:`${(a.right-a.left)*100}%`,height:`${(a.bottom-a.top)*100}%`})}else $('box2').style.display='none';
+  Object.assign($('box').style,{left:`${b.left*100}%`,top:`${b.top*100}%`,width:`${(b.right-b.left)*100}%`,height:`${(b.bottom-b.top)*100}%`});
+  $('status').textContent=`${scene}: ${i+1}/${times.length}`;
+ }
+ const track={version:2,scene,model,interval:$('smart').checked?null:interval,sampling:$('smart').checked?'scene-change':'interval',generated:new Date().toISOString(),samples};
+ const saved=await fetch('/api/focus/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({scene,track})}).then(x=>x.json());
+ log(saved.error?`  save failed: ${saved.error}`:`  saved ${saved.saved} (${saved.samples} samples)`);
+}
+
+$('go').onclick=async()=>{
+ $('go').disabled=true;$('log').textContent='';
+ const chosen=[...document.querySelectorAll('#scenes input:checked')].map(x=>x.value),interval=Math.max(.25,+$('interval').value||1),mock=$('mock').checked;
+ try{for(const s of chosen)await run(s,interval,mock);$('status').textContent='Done';}catch(e){$('status').textContent=String(e.message||e);log(String(e))}
+ $('go').disabled=false;
+};
+</script>
+</body></html>

@@ -1,0 +1,136 @@
+:root{color-scheme:dark;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;color:#f0f0ef;background:#101214;font-synthesis:none;-webkit-font-smoothing:antialiased}*{box-sizing:border-box}body{margin:0}button,input{font:inherit}button,a,input{-webkit-tap-highlight-color:transparent}button{color:inherit;cursor:pointer;border:0;background:none}button:disabled{opacity:.3;cursor:default}button:focus-visible,a:focus-visible,input:focus-visible,.player:focus-visible{outline:2px solid #d9e8f3;outline-offset:5px}button{transition:background-color 150ms ease,transform 150ms ease,opacity 150ms ease}button:active{transform:scale(.96)}main{max-width:1440px;margin:auto;padding:0 54px}.app-header{height:102px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:11px;font-size:15px;font-weight:500;letter-spacing:-.3px;color:inherit;text-decoration:none}.spark{font-size:30px;font-weight:300}.badge{margin-left:10px;font-size:8px;letter-spacing:1.4px;color:#777d80;font-weight:500}.open{font-size:12px;color:#b3b7b9;padding:10px 14px;border-radius:9px;background:#ffffff06;box-shadow:inset 0 0 0 1px #ffffff0b}.open span{margin-left:18px;color:#777}.player{position:relative;isolation:isolate;height:min(74vw,760px);min-height:470px;max-height:calc(100svh - 170px);overflow:clip;border-radius:17px;background:#171b1f;box-shadow:0 25px 70px #0005,inset 0 0 0 1px #ffffff0a;--ambient-opacity:.7;--edge:9%}.player:fullscreen{width:100%;height:100%;max-height:none;border-radius:0}.player #ambient{position:absolute;inset:-12%;width:124%;height:124%;filter:blur(28px) saturate(.88);opacity:var(--ambient-opacity);pointer-events:none}.shade{position:absolute;inset:0;background:linear-gradient(#070d144d,transparent 32%,transparent 62%,#080d1677);z-index:1;pointer-events:none}.film-wrap{position:absolute;inset:8% 8% 13%;display:flex;align-items:center;justify-content:center;z-index:0}video{width:100%;max-height:100%;object-fit:contain;mask-image:linear-gradient(to right,transparent,#000 var(--edge),#000 calc(100% - var(--edge)),transparent),linear-gradient(to bottom,transparent,#000 var(--edge),#000 calc(100% - var(--edge)),transparent);mask-composite:intersect;-webkit-mask-composite:source-in;cursor:pointer}.chrome{z-index:2;transition:opacity 220ms ease-out,transform 220ms ease-out}.heading{position:absolute;left:36px;right:30px;top:30px;display:flex;justify-content:space-between;align-items:flex-start}.eyebrow{font-size:9px;letter-spacing:2px;color:#ffffff80;margin:0 0 11px}h1{font-size:20px;font-weight:450;letter-spacing:-.5px;margin:0}.subtitle{font-size:11px;color:#ffffff82;margin-top:9px}.glass{background:#19222c55;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:inset 0 0 0 1px #ffffff19,0 6px 24px #00000012}.icon{position:relative;width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border-radius:9px;flex-shrink:0;font-size:24px;line-height:1}.icon svg,svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.icon:hover,.text-button:hover{background:#ffffff10}.icon small{position:absolute;font-size:8px;top:17px;left:16px}.center-play{position:absolute;z-index:2;left:50%;top:47%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;display:grid;place-items:center;transition:opacity 180ms ease-out,background-color 150ms ease}.center-play svg{width:25px;height:25px;margin-left:4px}.center-play:active{transform:translate(-50%,-50%) scale(.96)}.player.playing .center-play{opacity:0;pointer-events:none}.bottom{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);width:min(650px,calc(100% - 72px))}.transport{padding:14px 16px 8px;border-radius:16px}.timeline{display:flex;align-items:center;gap:12px}.timeline span{font-size:10px;color:#ffffffab;font-variant-numeric:tabular-nums;min-width:29px}.timeline span:last-child{text-align:right}input[type=range]{appearance:none;background:transparent;height:20px;margin:0;cursor:pointer;min-width:0;accent-color:#eef1f5}input[type=range]::-webkit-slider-runnable-track{height:3px;border-radius:3px;background:linear-gradient(to right,#eef1f5 var(--fill,0%),#ffffff40 var(--fill,0%))}input[type=range]::-webkit-slider-thumb{appearance:none;height:9px;width:9px;margin-top:-3px;border-radius:50%;background:#f0f2f5;box-shadow:0 1px 3px #0005}input[type=range]::-moz-range-track{height:3px;background:#ffffff40}input[type=range]::-moz-range-progress{height:3px;background:#eef1f5}input[type=range]::-moz-range-thumb{height:9px;width:9px;border:0;border-radius:50%;background:#f0f2f5}#seek{flex:1}.buttons{display:flex;align-items:center;justify-content:space-between;position:relative}.button-group{display:flex;align-items:center;gap:1px}#volume{width:58px;--fill:70%}.playback{position:absolute;left:50%;transform:translateX(-50%);gap:7px}.text-button{font-size:11px;min-width:40px;min-height:40px;border-radius:8px}.hint{text-align:center;font-size:8px;letter-spacing:1.2px;color:#ffffff55;margin:15px 0 2px}.hint i{font-style:normal;margin:0 11px;color:#ffffff30}footer{display:flex;justify-content:space-between;padding:26px 2px;color:#6f7479;font-size:11px}footer span:last-child{font-size:8px;letter-spacing:1.5px}.settings{position:absolute;right:30px;top:80px;width:280px;z-index:4;border-radius:14px;padding:16px 20px;background:#1b242bf2}.settings-head{font-size:12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.settings-head button{margin-right:-10px}.settings label{display:block;font-size:11px;color:#d1d4d8;margin:16px 0}.settings output{float:right;color:#88949e;font-variant-numeric:tabular-nums}.settings input[type=range]{display:block;width:100%;margin-top:9px}.settings .check{display:flex;align-items:center;gap:9px}.settings p{font-size:10px;line-height:1.6;color:#8f999f}.settings #reset{padding:0;color:#bdc6cf}.status{position:absolute;left:50%;top:63%;transform:translateX(-50%);z-index:5;border-radius:10px;padding:10px 15px;font-size:12px;text-align:center;max-width:85%}.status:empty{display:none}.player.idle .chrome{opacity:0;pointer-events:none}.player.idle{cursor:none}.player:focus-within .chrome{opacity:1;pointer-events:auto}#pipNotice{position:absolute;top:50%;width:100%;text-align:center;z-index:1;font-size:13px}#drop{position:absolute;inset:12px;border:1px dashed #fff8;background:#19222ce8;border-radius:10px;z-index:8;place-items:center;font-size:20px}#drop:not([hidden]){display:grid}[hidden]{display:none!important}@media(max-width:700px){main{padding:0 16px}.app-header{height:76px}.badge{display:none}.player{height:75svh;min-height:400px;max-height:none}.heading{left:22px;right:18px;top:24px}h1{font-size:17px}.film-wrap{inset:15% 0 22%}.bottom{width:calc(100% - 28px);bottom:19px}.transport{padding:12px 9px 7px}.hint{font-size:7px;letter-spacing:.6px}.hint i{margin:0 5px}#volume{display:none}.playback{gap:0}.button-group .icon{width:36px}.settings{right:18px}footer span:last-child{display:none}}@media(prefers-reduced-motion:reduce){button,.chrome,.center-play{transition:none}}
+
+.player:fullscreen{height:100dvh;width:100vw;min-height:0}.heading{pointer-events:none}.heading button{pointer-events:auto}
+
+.preview-tools{display:flex;justify-content:flex-end;gap:20px;padding:0 0 18px;color:var(--outside-muted,#858b91);font-size:10px}.preview-tools label{display:flex;align-items:center;gap:8px}.preview-tools select{color:inherit;background:var(--select-bg,#1b1e22);border:1px solid #8883;border-radius:7px;padding:7px;font:inherit;max-width:180px}.app-header{color:var(--outside-ink,#f0f0ef)}body{background:var(--page-bg,#101214)}body[data-backdrop=light]{--page-bg:#fff;--outside-ink:#282d32;--outside-muted:#515962;--select-bg:#f6f7f8;color-scheme:light}body[data-backdrop=sand]{--page-bg:#d8d0c3;--outside-ink:#37332e;--outside-muted:#635d53;--select-bg:#e8e1d5;color-scheme:light}body[data-backdrop=blue]{--page-bg:#101d30;--outside-ink:#e1e7ee;--outside-muted:#99a8bc;--select-bg:#1b2a40}.player{color-scheme:dark;color:#f0f0ef}.open{color:inherit}footer{color:var(--outside-muted,#6f7479)}@media(max-width:700px){.preview-tools{justify-content:space-between;gap:8px;font-size:9px}.preview-tools select{max-width:135px}}
+body{min-height:100svh}.player{max-height:calc(100svh - 220px)}@media(max-width:700px){.player{max-height:none}}
+
+video-player{display:block}video-skin.player{display:block;width:100%;color:white;--video-font-family:-apple-system,BlinkMacSystemFont,sans-serif}video-skin #video{position:absolute;inset:8% 8% 13%;width:84%;height:79%;max-height:none;object-fit:contain;z-index:0}video-skin .heading{z-index:5}video-skin .settings{z-index:8}video-skin #ambient{z-index:-1}video-skin .shade{z-index:0}video-skin .status{z-index:10}video-skin .settings button{color:#f0f0ef}video-skin:fullscreen{height:100dvh;max-height:none;width:100vw}
+video-skin #video{inset:auto;left:50%;top:47.5%;transform:translate(-50%,-50%);max-height:none;max-width:none}video-skin .heading h1{font-weight:450;font-size:20px}video-skin .heading .subtitle{font-size:11px}
+/* Six treatments, all fed by the same video. */
+.mode-picker{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;border:1px solid #8882;background:#88808;border-radius:12px;padding:5px}.mode-picker button{min-height:48px;padding:8px 6px;border-radius:8px;color:var(--outside-muted,#939ba3);font-size:10px;text-align:left;white-space:nowrap}.mode-picker button span{font-size:9px;opacity:.5;margin-right:6px}.mode-picker button[aria-pressed=true]{color:var(--outside-ink,#f0f0ef);background:#8882;box-shadow:0 1px 4px #0001}.mode-picker button:hover{background:#88815}.mode-caption{min-height:54px;display:flex;align-items:center;justify-content:space-between;gap:16px;color:var(--outside-muted,#858b91);font-size:11px}.mode-caption p{line-height:1.5;margin:12px 0}.mode-caption button{font-size:11px;white-space:nowrap;color:var(--outside-ink,#eee);border:1px solid #8884;border-radius:8px;padding:9px 12px;min-height:40px}
+video-skin.player{height:min(59vw,720px);min-height:420px;max-height:none}video-skin #video{top:50%}video-skin[data-mode=ambient]{background:transparent;box-shadow:none;border-radius:0}video-skin[data-mode=ambient] #ambient{inset:0;width:100%;height:100%;mask-image:radial-gradient(ellipse 65% 65%,#000 35%,transparent 85%);filter:blur(22px)}video-skin[data-mode=ambient] .shade{background:linear-gradient(transparent 55%,#080d1644)}video-skin[data-mode=cinematic] #ambient{filter:blur(55px) saturate(1.08);inset:-20%;width:140%;height:140%}video-skin[data-mode=cinematic] .shade{background:linear-gradient(#080d1644,transparent 40%,#080d1666)}video-skin[data-mode=focus] #video{mask-image:radial-gradient(ellipse 50% 50% at center,#000 var(--focus-solid,48%),transparent 100%);-webkit-mask-image:radial-gradient(ellipse 50% 50% at center,#000 var(--focus-solid,48%),transparent 100%)}video-skin[data-mode=floating].mode-idle .heading{opacity:0;pointer-events:none}video-skin[data-mode=floating]:has(:focus-visible) .heading{opacity:1;pointer-events:auto}video-skin[data-mode=fullscreen]{border-radius:0;height:78svh}video-skin[data-mode=fullscreen] #video{object-fit:cover}body[data-mode=fullscreen] main{max-width:none;padding:0}body[data-mode=fullscreen] .app-header,body[data-mode=fullscreen] .preview-tools,body[data-mode=fullscreen] .mode-picker,body[data-mode=fullscreen] .mode-caption,body[data-mode=fullscreen] footer{margin-inline:40px}video-skin:fullscreen{width:100vw;height:100dvh;max-height:none;min-height:0}video-skin .heading{text-shadow:0 1px 12px #0009}
+@media(max-width:1000px){.mode-picker{grid-template-columns:repeat(3,1fr)}.mode-picker button{font-size:11px;padding-left:12px}}@media(max-width:700px){.mode-picker{gap:3px}.mode-picker button{white-space:normal;font-size:10px;min-height:48px}.mode-picker button span{display:block;margin-bottom:4px}.mode-caption{font-size:10px;min-height:66px}video-skin.player{height:66svh;min-height:390px}.mode-caption button{font-size:10px}body[data-mode=fullscreen] .app-header,body[data-mode=fullscreen] .preview-tools,body[data-mode=fullscreen] .mode-picker,body[data-mode=fullscreen] .mode-caption,body[data-mode=fullscreen] footer{margin-inline:16px}}
+@media(prefers-reduced-motion:reduce){.mode-picker button,.heading{transition:none}}
+
+video-skin[data-mode=ambient] .shade{background:none}video-skin[data-mode=ambient] .heading{color:var(--outside-ink,#f0f0ef);text-shadow:none}video-skin[data-mode=ambient] .eyebrow,video-skin[data-mode=ambient] .subtitle{color:var(--outside-muted,#939ba3)}.settings input:disabled{opacity:.35;cursor:default}
+
+/* Ambient Fade: ease into the sharp picture, then taper the sampled halo to the page. */
+video-skin[data-mode=ambient] #video{
+ mask-image:var(--ambient-film-mask);-webkit-mask-image:var(--ambient-film-mask);
+ mask-composite:intersect;-webkit-mask-composite:source-in;
+}
+video-skin[data-mode=ambient] #ambient{
+ filter:blur(var(--ambient-blur,34px)) saturate(.95);
+ mask-image:radial-gradient(ellipse 50% 50% at center,#000 10%,rgba(0,0,0,.94) 28%,rgba(0,0,0,.70) 45%,rgba(0,0,0,.38) 62%,rgba(0,0,0,.12) 79%,transparent 100%);
+ -webkit-mask-image:radial-gradient(ellipse 50% 50% at center,#000 10%,rgba(0,0,0,.94) 28%,rgba(0,0,0,.70) 45%,rgba(0,0,0,.38) 62%,rgba(0,0,0,.12) 79%,transparent 100%);
+}
+
+/* Remove decorative strokes while retaining keyboard focus indicators. */
+.mode-picker,.preview-tools select,.mode-caption button{border:0}
+.open{box-shadow:none}
+.glass{box-shadow:0 6px 24px #0002}
+video-skin.player{box-shadow:0 25px 70px #0003}
+video-skin[data-mode=ambient]{box-shadow:none}
+/* Viewing surface: optional configuration lives behind one quiet button. */
+body{min-height:100svh}main{min-height:100svh;display:grid;align-items:center;width:100%;padding:32px;max-width:1440px}
+video-skin.player{height:min(84svh,800px);min-height:360px}
+.heading{justify-content:flex-end;top:20px;right:22px;left:auto}
+.heading #settingsButton{width:36px;height:36px;font-size:22px;background:#20283030;box-shadow:none}
+.settings{top:66px;right:22px;width:330px;max-width:calc(100% - 32px);max-height:calc(100% - 84px);overflow-y:auto;overscroll-behavior:contain;padding:14px 18px;background:#1d242df5;color:#f0f2f5;color-scheme:dark}
+.settings-head{margin:0 0 4px;font-size:12px}.settings-section{font-size:10px;color:#9da8b5;margin:14px 0 6px}
+.settings .open{width:100%;min-height:40px;text-align:left;padding:9px 0;color:#edf1f7;font-size:12px}.settings .open span{float:right}
+.settings .mode-picker{grid-template-columns:repeat(2,1fr);gap:3px;padding:0;background:none;border-radius:0}.settings .mode-picker button{min-height:40px;padding:6px 8px;font-size:10px;color:#b5beca}.settings .mode-picker button span{display:none}.settings .mode-picker button[aria-pressed=true]{color:white;background:#ffffff15}
+.settings .preview-tools{display:grid;gap:10px;padding:14px 0 2px;color:#b5beca}.settings .preview-tools label{display:flex;justify-content:space-between;align-items:center;margin:0;font-size:11px}.settings .preview-tools select{font-size:11px;max-width:190px;width:190px;min-height:34px;color:#e5eaf1;background:#2d3540}
+.settings .text-button{color:#c6ced9}body[data-mode=fullscreen] main{padding:0;min-height:100svh}body[data-mode=fullscreen] video-skin.player{height:100svh;min-height:0}
+@media(max-width:700px){main{padding:12px}video-skin.player{height:90svh;min-height:360px}.heading{top:14px;right:14px}.settings{right:14px;top:58px;max-height:calc(100% - 72px)}}
+body[data-mode=fullscreen] .settings .mode-picker,body[data-mode=fullscreen] .settings .preview-tools{margin:0}
+.settings #expandMode{min-height:40px;font-size:11px;color:#d3dce7}
+
+/* Restore the original wide dissolve while keeping the current viewing layout. */
+video-skin[data-mode=ambient] #video{mask-image:var(--ambient-film-mask);-webkit-mask-image:var(--ambient-film-mask);mask-composite:intersect;-webkit-mask-composite:source-in;filter:none;object-fit:contain}
+
+/* Content-aware edges: per-side fade widths and halo centre, animated by the browser between analysis samples. */
+@property --fade-l{syntax:'<percentage>';inherits:true;initial-value:27.8%}
+@property --fade-r{syntax:'<percentage>';inherits:true;initial-value:27.8%}
+@property --fade-t{syntax:'<percentage>';inherits:true;initial-value:28.5%}
+@property --fade-b{syntax:'<percentage>';inherits:true;initial-value:28.5%}
+@property --halo-x{syntax:'<percentage>';inherits:true;initial-value:50%}
+@property --halo-y{syntax:'<percentage>';inherits:true;initial-value:50%}
+video-skin.player{transition:--fade-l 260ms linear,--fade-r 260ms linear,--fade-t 260ms linear,--fade-b 260ms linear,--halo-x 600ms linear,--halo-y 600ms linear}
+video-skin[data-mode=ambient] #ambient{
+ mask-image:radial-gradient(ellipse 50% 50% at var(--halo-x) var(--halo-y),#000 10%,rgba(0,0,0,.94) 28%,rgba(0,0,0,.70) 45%,rgba(0,0,0,.38) 62%,rgba(0,0,0,.12) 79%,transparent 100%);
+ -webkit-mask-image:radial-gradient(ellipse 50% 50% at var(--halo-x) var(--halo-y),#000 10%,rgba(0,0,0,.94) 28%,rgba(0,0,0,.70) 45%,rgba(0,0,0,.38) 62%,rgba(0,0,0,.12) 79%,transparent 100%);
+}
+
+/* GPU fade (gpu.js): the canvas replaces the CSS-masked picture; the video element stays for playback and controls. */
+video-skin #gpuFilm{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:0;pointer-events:none}
+video-skin.gpu-film #video{opacity:.002}   /* not 0: an opacity-0 video can stop being composited, and with it the page's frames */
+
+/* Edge-continuation glow (edgeglow.js): sits above the ambient halo, below the picture; ambient mode only. */
+video-skin #edgeGlow{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;
+ -webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent),linear-gradient(to bottom,transparent,#000 8%,#000 92%,transparent);-webkit-mask-composite:source-in;
+ mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent),linear-gradient(to bottom,transparent,#000 8%,#000 92%,transparent);mask-composite:intersect;
+ /* the blurred layer must reach zero before its own bounds, or a faint outline of the player shows on light backdrops */
+ filter:blur(var(--edge-glow-blur,30px)) saturate(.6);opacity:calc(var(--ambient-opacity) * 1.25)}
+video-skin:not([data-mode=ambient]) #edgeGlow{display:none}
+
+/* Dev panel (devpanel.js): docked right and always visible on wide screens; a "Dev" tab opens it on narrow ones. */
+#devPanel{position:fixed;top:0;right:0;bottom:0;width:var(--dev-width,320px);overflow-y:auto;overscroll-behavior:contain;z-index:60;background:#fafafa;box-shadow:-1px 0 0 #0000000f;color-scheme:light;padding:10px 8px 24px}
+#devTab{display:none}
+body.has-dev{padding-right:var(--dev-width,320px)}
+@media(max-width:900px){
+ body.has-dev{padding-right:0}
+ #devPanel{transform:translateX(100%);transition:transform 220ms cubic-bezier(.2,.8,.2,1);box-shadow:-12px 0 40px #0006}
+ body.dev-open #devPanel{transform:none}
+ #devTab{display:block;position:fixed;right:0;top:50%;transform:translateY(-50%) rotate(-90deg);transform-origin:100% 50%;z-index:61;padding:6px 12px;border-radius:8px 8px 0 0;background:#fafafa;color:#3a4048;box-shadow:0 0 0 1px #0000000f;font:11px -apple-system,sans-serif;letter-spacing:.06em}
+ body.dev-open #devTab{right:var(--dev-width,320px)}
+}
+@media(prefers-reduced-motion:reduce){#devPanel{transition:none}}
+
+/* Notches (focus.js → app.js): soft local holes in the fade around each subject; see filmMask in app.js. */
+@property --n1x{syntax:'<percentage>';inherits:true;initial-value:50%}
+@property --n1y{syntax:'<percentage>';inherits:true;initial-value:50%}
+@property --n1rx{syntax:'<percentage>';inherits:true;initial-value:10%}
+@property --n1ry{syntax:'<percentage>';inherits:true;initial-value:10%}
+@property --n2x{syntax:'<percentage>';inherits:true;initial-value:50%}
+@property --n2y{syntax:'<percentage>';inherits:true;initial-value:50%}
+@property --n2rx{syntax:'<percentage>';inherits:true;initial-value:10%}
+@property --n2ry{syntax:'<percentage>';inherits:true;initial-value:10%}
+@property --n3x{syntax:'<percentage>';inherits:true;initial-value:50%}
+@property --n3y{syntax:'<percentage>';inherits:true;initial-value:50%}
+@property --n3rx{syntax:'<percentage>';inherits:true;initial-value:10%}
+@property --n3ry{syntax:'<percentage>';inherits:true;initial-value:10%}
+@property --n1a{syntax:'<number>';inherits:true;initial-value:0}
+@property --n2a{syntax:'<number>';inherits:true;initial-value:0}
+@property --n3a{syntax:'<number>';inherits:true;initial-value:0}
+@property --n4x{syntax:'<percentage>';inherits:true;initial-value:50%}
+@property --n4y{syntax:'<percentage>';inherits:true;initial-value:50%}
+@property --n4rx{syntax:'<percentage>';inherits:true;initial-value:10%}
+@property --n4ry{syntax:'<percentage>';inherits:true;initial-value:10%}
+@property --n4a{syntax:'<number>';inherits:true;initial-value:0}
+video-skin.player{--notch-soft:.4;transition:--fade-l 260ms linear,--fade-r 260ms linear,--fade-t 260ms linear,--fade-b 260ms linear}
+video-skin #ambient{transition:--halo-x 600ms linear,--halo-y 600ms linear}
+video-skin[data-mode=ambient] #video{transition:object-view-box 900ms cubic-bezier(.3,.1,.3,1)}
+
+/* Dev panel: no per-panel version rows ("V1") and no "DialKit" title; the folders start at the top. */
+#devPanel .dialkit-panel-section-toolbar-clip{display:none}
+#devPanel .dialkit-folder-root > .dialkit-panel-header{display:none}
+
+/* The old ✧ settings button is gone: everything it opened lives in the dev panel (Player / Advanced).
+   The hidden settings markup stays because the player still reads its inputs. */
+#settingsButton,#settings{display:none!important}
+
+/* Phones: the player was 90svh tall around a 16:9 picture, so the halo filled a tall empty column with grey.
+   A square player leaves room for the mobile top/bottom bars and a modest halo. */
+@media(max-width:700px){video-skin.player{height:auto;min-height:0;aspect-ratio:1/1;max-height:82svh}}
+/* The closed dev panel's shadow bled onto the page edge on narrow screens; only cast it while open. */
+@media(max-width:900px){#devPanel{box-shadow:none}body.dev-open #devPanel{box-shadow:-12px 0 40px #0006}}
+
+/* Dev panel polish: long scene names truncate instead of running into the "Scene" label; slider labels share the
+   12px inset of every other row. */
+#devPanel .dialkit-select-trigger{gap:12px}
+#devPanel .dialkit-select-right{min-width:0}
+#devPanel .dialkit-select-value{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#devPanel .dialkit-select-chevron{flex:none}
+#devPanel .dialkit-slider-label{left:12px}

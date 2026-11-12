@@ -1,0 +1,28 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# dependencies and build output (npm start builds bundle.js / bundle.css)
+node_modules/
+bundle.js
+bundle.css
+
+# local work: QA snapshots, recordings, backups, old preview images
+tools/snaps/
+tools/ref/
+archive/
+backup-*/
+/*.jpg
+/*.png
+.claude/
+.DS_Store
+
+# demo clips stay local (third-party licences); the repo ships one CC0 sample
+assets/*
+!assets/dream.mp4
+!assets/dream.focus.json
+
+# development log and obsolete test pages
+NOTES.md
+tools/masktest.html

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contact Sheet</title>
+<style>
+:root{color-scheme:dark}body{margin:0;background:#111;color:#ddd;font:11px -apple-system,sans-serif}
+.g{display:grid;grid-template-columns:52px repeat(var(--n,5),1fr);gap:2px}
+.g>div{padding:4px}video{width:100%;aspect-ratio:16/9;object-fit:contain;background:#222;display:block}
+.cell{position:relative}.cell span{position:absolute;left:4px;top:2px;font:600 11px ui-monospace,monospace;color:#ff0;text-shadow:0 0 3px #000}
+.grid .cell::after{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(to right,#ff03 1px,transparent 1px),linear-gradient(to bottom,#ff03 1px,transparent 1px);background-size:10% 10%}
+</style></head>
+<body>
+<!-- Screening tool: /tools/contact.html?ids=4285,4056&frames=5 shows each Mixkit clip at evenly spaced moments. -->
+<div class="g" id="g"></div>
+<script>
+const q=new URLSearchParams(location.search),ids=(q.get('ids')||'').split(',').filter(Boolean),n=+(q.get('frames')||5);
+// ?cols=5 wraps one clip over several rows; ?grid adds a 10% grid; each frame is labelled with its time.
+const cols=+(q.get('cols')||n);document.documentElement.style.setProperty('--n',cols);if(q.has('grid'))document.body.classList.add('grid');
+const g=document.getElementById('g');
+for(const id of ids){
+ const l=document.createElement('div');l.textContent=(id.match(/video-files\/(\d+)/)||[,id])[1];g.append(l);
+ for(let i=0;i<n;i++){
+  if(i&&i%cols===0)g.append(document.createElement('div'));
+  const f=(i+.5)/n,v=document.createElement('video'),cell=document.createElement('div'),lab=document.createElement('span');cell.className='cell';cell.append(v,lab);v.muted=true;v.preload='auto';v.playsInline=true;
+  v.src=/^(https?:|\/)/.test(id)?id:`https://assets.mixkit.co/videos/${id}/${id}-360.mp4`;
+  v.addEventListener('loadedmetadata',()=>{const t=q.has('step')?i*+q.get('step'):v.duration*f;v.currentTime=Math.min(t,v.duration-.05);lab.textContent=v.currentTime.toFixed(1)+'s'},{once:true});g.append(cell);
+ }
+}
+</script>
+</body></html>
