@@ -1,8 +1,8 @@
 # Wisp
 
-A video player with no hard edges. The picture dissolves into the page, lit by its own colours, like a memory.
+Wisp is a video player with subject-aware edge fades, powered by [Jev](https://typesafe.ai), the image model by TypeSafe.
 
-Soft edges have a catch: whatever sits at the edge gets softened too. A child running into frame, a face near the top, a dog walking out on the right all vanish into the haze. Wisp knows where the people, animals and faces are, sees them coming before they reach an edge, and opens the fade around them. They stay sharp while everything else drifts away.
+The picture dissolves softly into the page, lit by its own colours. Soft edges usually come with a catch: whatever sits at the edge gets softened too, so a child running into frame or a face near the top vanishes into the haze. Wisp uses Jev to find the people, animals and faces in every shot, sees them coming before they reach an edge, and opens the fade around them. They stay sharp while everything else drifts away.
 
 ![Wisp](docs/preview.jpg)
 
