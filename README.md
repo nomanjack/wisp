@@ -1,8 +1,8 @@
 # Wisp
 
-Wisp is a video player with subject-aware edge fades, powered by [Jev](https://typesafe.ai), the image model by TypeSafe.
+Wisp is a content-aware video player that softly fades the edges of a video into the page, giving the picture a dreamy feel.
 
-The picture dissolves softly into the page, lit by its own colours. Soft edges usually come with a catch: whatever sits at the edge gets softened too, so a child running into frame or a face near the top vanishes into the haze. Wisp uses Jev to find the people, animals and faces in every shot, sees them coming before they reach an edge, and opens the fade around them. They stay sharp while everything else drifts away.
+It uses [Jev](https://typesafe.ai/), TypeSafe’s image model, to spot when a person or animal is about to move into the fade. Wisp adjusts the fade around them so they stay sharp as the rest of the picture blends into the page.
 
 ![Wisp](docs/preview.jpg)
 
